@@ -36,26 +36,61 @@ char ** parse_args ( char * line, int args, char *delimeter ){
 	return a;
 }
 
-char ** remove_redirect(char** arguments, int loc, int num_of_args){
-  char **new = malloc(sizeof(char *) * loc) ;
+char ** pip(char ** arguments, int num_of_args, int* piped){
   int i;
-  char *redir_char = arguments[loc];
-
-
-  if (!strcmp(redir_char, ">>") || !strcmp(redir_char, ">"))
-  for (i = 0; i<loc;i++){
-    new[i] = arguments[i];
+  int loc=0;
+  for (i = 0; arguments[i]; i++){
+    if (!strcmp(arguments[i], "|")){
+      loc = i;
+      *piped = 1;
+    }
   }
+  if (loc){
+    int fds[2];
+    pipe(fds);
+    int f = fork();
+    int backup_stdout = STDOUT_FILENO;
+    if(!f){
+      close(fds[0]);
+      dup2(fds[1], STDOUT_FILENO);
+      char **first_cmd = malloc(sizeof(char*)*loc + 2);
+      for (i = 0; i<loc;i++){
+        first_cmd[i] = arguments[i];
+      }
+      execvp(first_cmd[0], first_cmd);
+    }
+    close( fds[1] );
+    wait(NULL);
+    char test[500];  
+    dup2(backup_stdout,1);
+    //read(fds[0], test, sizeof(test)-1);
+    dup2(fds[0],0);
+    int j;
+    for (j = 0; test[j];j++){
+      j=j;
+    }
+    //int temp = open("temp", O_CREAT|O_RDWR, 0644);
+    //write(0, test, j);
+    char **new = malloc (sizeof(char*)* num_of_args);
+    if (loc){
+      for (j = 0; arguments[j+loc+1];j++){
+      new[j] = arguments[j+loc+1];
+      }
+      arguments = new;
+    }
+  }
+  return arguments;
+}
 
-  if (!strcmp(redir_char, "<")) 
-  for (i = 0; i<loc; i++){
+char ** remove_redirect(char** arguments, int loc, int num_of_args){
+  int i;
+  char **new = malloc(sizeof(char *) * loc+1);
+  for (i = 0; i<loc;i++){
+    if (arguments[i])
     new[i] = arguments[i];
   }
     arguments = new;
-    return new;
-
-
-
+    return arguments;
 }
 
 char ** redirect (char** arguments, int num_of_args)
