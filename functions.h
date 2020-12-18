@@ -13,5 +13,7 @@ char ** parse_cmds (char* cmd, int num);
 
 char * remove_spaces(char *s);
 
+char ** pip(char ** arguments, int num_of_args, int* piped);
+
 char** redirect (char** arguments, int num_of_args);
 #endif
