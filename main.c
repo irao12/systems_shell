@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
   int go = 1;
   while (go)
   {
+    int backup_stdin = dup(STDIN_FILENO);
     int backup_stdout = dup(STDOUT_FILENO);
     getcwd(cwd, sizeof(cwd));
     printf("%s $ ", cwd);
@@ -28,8 +29,8 @@ int main(int argc, char *argv[])
 
     int num_of_cmds = count_cmds(line);
     char **cmds = parse_cmds(line, num_of_cmds);
-    //printf("%s\n",cmds[0]);
-    //printf("%s\n",cmds[1]);
+  
+  
 
     char **arguments;
     int num_of_args;
@@ -41,6 +42,7 @@ int main(int argc, char *argv[])
       
 
       arguments = parse_args(cmds[i], num_of_args, " ");
+
 
       if (!strcmp(arguments[0], "cd"))
       {
@@ -56,27 +58,34 @@ int main(int argc, char *argv[])
       int num = fork();
       
       if (!num)
-      {
-        /*if (redirect){
-          int fd = open(arguments[j+1], O_CREAT, O_WRONLY, 0777);
-          int backup_stdout = dup( STDOUT_FILENO );
-          dup2(fd, STDOUT_FILENO);
-          execlp(arguments[0], arguments);
-          dup2(backup_stdout, STDOUT_FILENO);
-        }
-        */
-        
+      {        
+        dup2(backup_stdout,1);
+        int piped = 0;
+        arguments = pip(arguments, num_of_args, &piped);
+        //int fd = open("temp", O_RDONLY);
+        //dup2(fd, 0);
         arguments = redirect(arguments, num_of_args);
+
         execvp(arguments[0], arguments);
-        /*int num_of_eps = count_args(cmds[i], '|');
-        pipe_execute(parse_args(cmds[i], num_of_eps, "|"), num_of_eps);*/
 
         return 0;
 
       }
+      /*
+      else
+      {
+
+        
+
+
+
+      }
+      */
       int pid = waitpid(-1,&status,0);
     }
-    dup2(1, backup_stdout);
+
+
+    dup2(backup_stdout,1);
     free(arguments);
     int pid = waitpid(-1,&status,0);
   }
