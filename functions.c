@@ -8,41 +8,12 @@
 #include <fcntl.h>
 #include <errno.h>
 
-int count_args ( char * line, char delimeter ){
-	int counter = 1;
-	int i;
-  for (i = 0; line[i]; i++){
-    if (line[i] == delimeter) 
-      counter++;
-  }
-	return counter;
-}
-
-char ** parse_args ( char * line, int args, char *delimeter ){
-	char **a = malloc(sizeof(char *) * args + 1);
-	char *token, *p;
-	int counter = 0;
-	p = line;
-	while (p){
-		token = strsep(&p, " ");
-    if (*token != '\0'){
-		  a[counter] = token;
-      counter++;
-    }
-    
-  }
-	a[counter] = NULL;
-
-	return a;
-}
-
-char ** pip(char ** arguments, int num_of_args, int* piped){
+char ** pip(char ** arguments, int num_of_args){
   int i;
   int loc=0;
   for (i = 0; arguments[i]; i++){
     if (!strcmp(arguments[i], "|")){
       loc = i;
-      *piped = 1;
     }
   }
   if (loc){
@@ -63,14 +34,11 @@ char ** pip(char ** arguments, int num_of_args, int* piped){
     wait(NULL);
     char test[500];  
     dup2(backup_stdout,1);
-    //read(fds[0], test, sizeof(test)-1);
     dup2(fds[0],0);
     int j;
     for (j = 0; test[j];j++){
       j=j;
     }
-    //int temp = open("temp", O_CREAT|O_RDWR, 0644);
-    //write(0, test, j);
     char **new = malloc (sizeof(char*)* num_of_args);
     if (loc){
       for (j = 0; arguments[j+loc+1];j++){
@@ -82,18 +50,39 @@ char ** pip(char ** arguments, int num_of_args, int* piped){
   return arguments;
 }
 
+char ** redirect_stdin (char** arguments, int num_of_args){
+  int i;
+  for (i = 0; arguments[i]; i++){
+    if (!strcmp(arguments[i], "<")){
+      int fd = open(arguments[i+1],O_RDONLY);
+      dup2(fd, STDIN_FILENO);
+
+      char ** new = malloc(sizeof(char*)*(i+3));
+      int j;
+      for (j = 0; j < i; j++){
+        new[j]=arguments[j];
+      }
+      for (j = i; arguments[j+2]; j++){
+        new[j]=arguments[j+2];
+      }
+      arguments = new;
+    }
+  }
+  return arguments;
+}
+
 char ** remove_redirect(char** arguments, int loc, int num_of_args){
   int i;
-  char **new = malloc(sizeof(char *) * loc+1);
+  char **new = malloc(sizeof(char *) * (loc+1));
   for (i = 0; i<loc;i++){
-    if (arguments[i])
     new[i] = arguments[i];
   }
+    new[i] = NULL;
     arguments = new;
     return arguments;
 }
 
-char ** redirect (char** arguments, int num_of_args)
+char ** redirect_stdout (char** arguments, int num_of_args)
 {
   int i;
   char** new = arguments;
@@ -116,55 +105,7 @@ char ** redirect (char** arguments, int num_of_args)
 
       new = remove_redirect(arguments, i, num_of_args);
     }
-
-    if (!strcmp(arguments[i], "<")){
-      int fd = open(arguments[i+1],O_RDONLY);
-
-      int backup_sdin = dup(STDIN_FILENO );
-
-      dup2(fd, STDIN_FILENO);
-
-      new = remove_redirect(arguments, i, num_of_args);
-    }
   }
   return new;
 }
 
-
-//removes newline from fgets
-void remover(char* buffer)
-{
-  char *returnval;
-  returnval = strchr(buffer,'\n');
-  if (returnval != NULL){
-    *returnval='\0';
-  }
-}
-
-
-int count_cmds(char * cmd){
-  int counter = 1;
-  int i;
-  for (i=1;i<strlen(cmd);i++){
-    if (cmd[i]==';'){
-      counter++;
-    }
-        
-  }
-  return counter;
-}
-
-char ** parse_cmds (char* cmd, int num){
-  char **a = malloc(sizeof(char *) * num + 2);
-	char *token, *p;
-	int counter = 0;
-	p = cmd;
-	while (p){
-		token = strsep(&p, ";"); 
-		a[counter] = token;
-		counter++;
-	}
-	a[counter] = NULL;
-
-	return a;
-}
