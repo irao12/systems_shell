@@ -46,6 +46,7 @@ TNPG: team bakers
     
     Goes through the input and finds the number of unique commands separated by a ";"
     Minimum amount of commands is 1.
+    
     === char** parse_cmds() ===
     
     Inputs: char* cmd, int num
