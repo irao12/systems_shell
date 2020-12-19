@@ -1,15 +1,14 @@
-all: main.o functions.o cd.o
-	gcc -o program main.o functions.o cd.o 
+all: main.o functions.o parse.o
+	gcc -o program main.o functions.o parse.o
 
-main.o: main.c functions.h cd.h
+main.o: main.c functions.h parse.h
 	gcc -c main.c 
 
 functions.o: functions.c functions.h
 	gcc -c functions.c 
 
-cd.o: cd.c cd.h
-	gcc -c cd.c
-
+parse.o: parse.c parse.h
+	gcc -c parse.c
 clean: 
 	rm *.o
   
