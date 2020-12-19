@@ -22,20 +22,7 @@ TNPG: team bakers
 ### main.c
  * Runs the program and creates the shell environment for the user. 
  * Checks all the commands entered, separating them as needed and then forking and executing the commands.
-  
-### cd.c
- * cd function that allows the user to traverse directories.
- 
- ```
-    === void cd() ===
-    Inputs: char * s
-    Returns: Nothing
-    
-    Changes the directory to whatever the user specifies.
- ```
-#### cd.h
- * Header file for cd.c
- 
+
 ### parse.c
  * Handles the parsing of multiple commands as well as the arguments within each unique command.
  
