@@ -48,6 +48,8 @@ TNPG: team bakers
     
     Goes through the input and puts each command into its own index in the array. Uses "num" to check how much memory to allocate for the array
     
+    
+```    
  
 #### parse.h
  * Header file for parse.c
