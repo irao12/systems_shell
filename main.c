@@ -1,6 +1,5 @@
-
+#include "parse.h"
 #include "functions.h"
-#include "cd.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,16 +13,16 @@ int main(int argc, char *argv[])
 {
 
   int i;
-  char line[50];
+  char line[100];
   int status;
-  char cwd[50];
+  char cwd[100];
   int go = 1;
+  int backup_stdin = dup(STDIN_FILENO);
+  int backup_stdout = dup(STDOUT_FILENO);
   while (go)
   {
-    int backup_stdin = dup(STDIN_FILENO);
-    int backup_stdout = dup(STDOUT_FILENO);
     getcwd(cwd, sizeof(cwd));
-    printf("%s $ ", cwd);
+    printf("\n%s $ ", cwd);
     fgets(line, sizeof(line), stdin);
     remover(line);
 
@@ -35,59 +34,50 @@ int main(int argc, char *argv[])
     char **arguments;
     int num_of_args;
 
-    for (i = 0; i < num_of_cmds; i++)
+    for (i = 0; cmds[i]; i++)
     {
       int j;
       num_of_args = count_args(cmds[i], ' ');
       
 
       arguments = parse_args(cmds[i], num_of_args, " ");
-
+      printf("\n");
 
       if (!strcmp(arguments[0], "cd"))
       {
-        if (num_of_args > 1)
-          cd(arguments[1]);
+        if (num_of_args > 1){
+          int val = chdir(arguments[1]);
+          if (val == -1)
+          printf("%s\n",strerror(errno));
+        }
+          break; 
       }
       if (!strcmp(arguments[0], "exit"))
-      {
-        go = 0;
-        break;
+      { 
+        exit(0);
       }
 
       int num = fork();
       
       if (!num)
       {        
-        dup2(backup_stdout,1);
-        int piped = 0;
-        arguments = pip(arguments, num_of_args, &piped);
-        //int fd = open("temp", O_RDONLY);
-        //dup2(fd, 0);
-        arguments = redirect(arguments, num_of_args);
+
+        arguments = pip(arguments, num_of_args);
+
+        arguments = redirect_stdin(arguments, num_of_args);
+
+        arguments = redirect_stdout(arguments,num_of_args);
 
         execvp(arguments[0], arguments);
-
+        printf("command not found\n");
         return 0;
-
       }
-      /*
-      else
-      {
-
-        
-
-
-
-      }
-      */
+    
       int pid = waitpid(-1,&status,0);
     }
-
-
-    dup2(backup_stdout,1);
+    dup2(backup_stdin, 0);
+    dup2(backup_stdout, 1);
     free(arguments);
-    int pid = waitpid(-1,&status,0);
   }
   return 0;
 }
