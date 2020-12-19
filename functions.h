@@ -1,19 +1,14 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-int count_args( char * line, char delimeter );
+char ** pip(char ** arguments, int num_of_args);
 
-char ** parse_args ( char * line, int args, char *delimeter );
+char ** redirect_stdin (char** arguments, int num_of_args);
 
-void remover(char* buffer);
+char ** remove_redirect(char** arguments, int loc, int num_of_args);
 
-int count_cmds(char * cmd);
+char ** redirect_stdout (char** arguments, int num_of_args);
 
-char ** parse_cmds (char* cmd, int num);
+void execute_redirect(char** arguments, int loc, int num_of_args);
 
-char * remove_spaces(char *s);
-
-char ** pip(char ** arguments, int num_of_args, int* piped);
-
-char** redirect (char** arguments, int num_of_args);
 #endif
