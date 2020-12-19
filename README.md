@@ -25,7 +25,9 @@ TNPG: team bakers
   
 ### cd.c
  * cd function that allows the user to traverse directories.
- ```------------- void cd() -------------
+ 
+ ```
+    === void cd() ===
     Inputs: char * s
     Returns: Nothing
     
@@ -36,13 +38,15 @@ TNPG: team bakers
  
 ### parse.c
  * Handles the parsing of multiple commands as well as the arguments within each unique command.
- ```------------- int count_cmds() -------------
+ 
+ ```
+    === int count_cmds() ===
     Inputs: char * cmd_line
     Returns: Number of unique commands in the input "cmd_line"
     
     Goes through the input and finds the number of unique commands separated by a ";"
     Minimum amount of commands is 1.
-    ------------- char** parse_cmds() -------------
+    === char** parse_cmds() ===
     Inputs: char* cmd, int num
     Returns: An array of strings with each index in the array containing a unique command
     
@@ -55,4 +59,4 @@ TNPG: team bakers
  * Header file for parse.c
  
 ### functions.c
- * 
+ 
