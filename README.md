@@ -46,6 +46,8 @@ TNPG: team bakers
     Inputs: char* cmd, int num
     Returns: An array of strings with each index in the array containing a unique command
     
+    Goes through the input and puts each command into its own index in the array. Uses "num" to check how much memory to allocate for the array
+    
  
 #### parse.h
  * Header file for parse.c
