@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
     for (i = 0; cmds[i]; i++)
     {
       int j;
-      num_of_args = count_args(cmds[i], ' ');
+      num_of_args = count_args(cmds[i]);
       
 
-      arguments = parse_args(cmds[i], num_of_args, " ");
+      arguments = parse_args(cmds[i], num_of_args);
       printf("\n");
 
       if (!strcmp(arguments[0], "cd"))
