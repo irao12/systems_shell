@@ -99,8 +99,9 @@ TNPG: team bakers
     
     /*========== char ** redirect_stdout ==========
     Inputs: char ** arguments, int num_of_args
-    Returns: character array of the two functions containing ">", the output gets redirected to a file.
+    Returns: character array with each index containing the separate commands with ">", the output of these commands when run will get redirected to a file.
     
+    Redirects output using ">" or ">>". If the commands are separated using ">" it will create a new file and put the output into that file. If the commands are separated using ">>" it will append to a file.
     
     
     
