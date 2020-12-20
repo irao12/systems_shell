@@ -30,17 +30,17 @@ char ** parse_cmds (char* cmd, int num){
 	return a;
 }
 
-int count_args ( char * line, char delimeter ){
+int count_args ( char * line ){
 	int counter = 1;
 	int i;
   for (i = 0; line[i]; i++){
-    if (line[i] == delimeter) 
+    if (line[i] == ' ') 
       counter++;
   }
 	return counter;
 }
 
-char ** parse_args ( char * line, int args, char *delimeter ){
+char ** parse_args ( char * line, int args){
 	char **a = malloc(sizeof(char *) * (args + 1));
 	char *token, *p;
 	int counter = 0;
