@@ -1,6 +1,6 @@
 # PIESH
-by Mohammad Hamzah, Ivan Rao, and Gene Ye 
-\TNPG: team bakers
+by Mohammad Hamzah, Ivan Rao, and Gene Ye
+* TNPG: team bakers
 
 # Features:
 * Displays the current directory 
