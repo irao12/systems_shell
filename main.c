@@ -21,19 +21,26 @@ int main(int argc, char *argv[])
   int backup_stdout = dup(STDOUT_FILENO);
   while (go)
   {
+    //default prompt: cwd $
     getcwd(cwd, sizeof(cwd));
     printf("\n%s $ ", cwd);
     fgets(line, sizeof(line), stdin);
-    remover(line);
 
+    //prevents a segmentation fault
+    while(!strcmp(line,"\n")){
+      printf("\nno commands\n");
+      printf("\n%s $ ", cwd); 
+      fgets(line, sizeof(line), stdin);
+    }
+    remover(line);
+    //parse the commands
     int num_of_cmds = count_cmds(line);
     char **cmds = parse_cmds(line, num_of_cmds);
   
-  
-
     char **arguments;
     int num_of_args;
 
+    //executes each command
     for (i = 0; cmds[i]; i++)
     {
       int j;
