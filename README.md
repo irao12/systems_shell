@@ -8,7 +8,7 @@ TNPG: team bakers
 * Forks and execs command
 * Reads multiple commands on a single line using ;
 * Redirects stdout and stdin using > and < respectively
-* Allows for piping using | (only one pipe)
+* Allows for piping using |
 
 **All commands should have be valid and have a single space to avoid any potential errors**
 
@@ -16,6 +16,14 @@ TNPG: team bakers
 
 # Bugs:
 * Happens rarely but memory allocation might not work and there will be a sysmalloc error.
+* Will get a segmentation fault if only spaces are entered as a command
+* Having multiple ;'s next to each other will result in a segmentation fault
+
+# Limitations:
+* Must pipe before redirection in order for the shell to work.
+       ex: ls | wc > foo will work but
+           ls < foo | wc will not work     
+* Only pipe once per command
 
 # Files & Function Headers:
 
@@ -94,9 +102,9 @@ TNPG: team bakers
     Returns: array of strings with each index containing the separate commands taken from 
     the input without the "<" so that the commands can be executed.
     
-    Redirects output using "<". The function looks through char** arguments and if the commands
-    are separated using "<", when the commands are executed it will use the one of the arguments
-    as input for the other. num_of_args is used for creating the output. 
+    Redirects output using "<". The function looks through char** arguments and if the 
+    commands are separated using "<", when the commands are executed it will use the one
+    of the argumentsas input for the other. num_of_args is used for creating the output. 
 
     ====================*/
     
@@ -104,21 +112,21 @@ TNPG: team bakers
     Inputs: char ** arguments, int loc, int num_of_args
     Returns: array of strings without the redirection symbols in them
     
-    Removes the redirection symbols from char** arguments found at index "loc". num_of_args is 
-    used for memory allocation.
+    Removes the redirection symbols from char** arguments found at index "loc". num_of_args 
+    is used for memory allocation.
     
     ====================*/
     
     /*========== char ** redirect_stdout ==========
     Inputs: char ** arguments, int num_of_args
-    Returns: array of strings with each index containing the separate commands taken from the
-    input without the ">" or ">>" so that the commands can be executed.
+    Returns: array of strings with each index containing the separate commands taken from
+    the input without the ">" or ">>" so that the commands can be executed.
     
-    Redirects output using ">" or ">>". The function looks through char** arguments and if the
-    commands are separated using ">", when the commands are executed it will overwrite a file
-    with the contents of executions.  
-    If the commands are separated using ">>", when the commands are executed it will append to 
-    a file with the contents of execution. num_of_args is used for creating the           output. 
+    Redirects output using ">" or ">>". The function looks through char** arguments and if 
+    the commands are separated using ">", when the commands are executed it will overwrite a 
+    file with the contents of executions.  If the commands are separated using ">>", when the
+    commands are executed it will append to a file with the contents of execution. num_of_args
+    is used for creating the output. 
     
     ====================*/
 ```
