@@ -26,6 +26,7 @@ TNPG: team bakers
        ex: ls | wc > foo will work but
            ls < foo | wc will not work     
 * Only pipe once per command
+* "exit" command should be run by itself
 
 # Files & Function Headers:
 
