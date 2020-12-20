@@ -85,23 +85,27 @@ TNPG: team bakers
     
     ====================*/
     
-    /*========== char ** redirect_stdinchar ** remove_redirect ==========
-    Inputs:
-    Returns:
+    /*========== char ** redirect_stdinchar ==========
+    Inputs: char ** arguments, int num_of_args
+    Returns: character array with each index containing the separate commands taken from the input without the "<" so that the commands can be executed.
     
+
     ====================*/
     
     /*========== char ** remove_redirect ==========
-    Inputs:
-    Returns:   
+    Inputs: char ** arguments, int loc, int num_of_args
+    Returns: character array without the redirection symbols in them
+    
+    Removes the redirection symbols from char** arguments found at index "loc". num_of_args is used for memory allocation.
     
     ====================*/
     
     /*========== char ** redirect_stdout ==========
     Inputs: char ** arguments, int num_of_args
-    Returns: character array with each index containing the separate commands with ">", the output of these commands when run will get redirected to a file.
+    Returns: character array with each index containing the separate commands taken from the input without the ">" or ">>" so that the commands can be executed.
     
-    Redirects output using ">" or ">>". If the commands are separated using ">" it will create a new file and put the output into that file. If the commands are separated using ">>" it will append to a file.
+    Redirects output using ">" or ">>". The function looks through char** arguments and if the commands are separated using ">", when the commands are executed it will overwrite     a file with the contents of executions.  
+    If the commands are separated using ">>", when the commands are executed it will append to a file with the contents of execution. num_of_args is used for creating the output.
     
     
     
