@@ -98,8 +98,11 @@ TNPG: team bakers
     ====================*/
     
     /*========== char ** redirect_stdout ==========
-    Inputs:
-    Returns:
+    Inputs: char ** arguments, int num_of_args
+    Returns: character array of the two functions containing ">", the output gets redirected to a file.
+    
+    
+    
     
     ====================*/
     
