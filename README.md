@@ -12,7 +12,8 @@ TNPG: team bakers
 
 **All commands should have be valid and have a single space to avoid any potential errors**
 
-# Attempted:
+# Attempted but Failed:
+* None so far
 
 # Bugs:
 * Happens rarely but memory allocation might not work and there will be a sysmalloc error.
