@@ -16,11 +16,12 @@ TNPG: team bakers
 * None so far
 
 # Bugs:
-* Happens rarely but memory allocation might not work and there will be a sysmalloc error.
 * Will get a segmentation fault if only spaces are entered as a command
 * Having multiple ;'s next to each other will result in a segmentation fault
 * Redirecting stdin with a file that does not exists will break the program and force you
   to exit manually
+* Shell will return a segmentation fault if the command line inputted is over 100
+  chars
 # Limitations:
 * Must pipe before redirection in order for the shell to work.
        ex: ls | wc > foo will work but
