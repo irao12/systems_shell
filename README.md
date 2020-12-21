@@ -90,46 +90,47 @@ TNPG: team bakers
  
  ```
  
-    /*========== char ** pip ==========
+    /*========== char ** pip() ==========
     Inputs: char ** arguments, int num_of_args
     Returns: array of strings with each index containing the separate commands taken from
-    the input without the "|" so that the commands can be executed.
+    the input without the "|" and the first command so that the command can be executed.
     
     Implements piping between commands. The output of one command will be used as input for
     the other. num_of_args is used for memory allocation.
     
     ====================*/
     
-    /*========== char ** redirect_stdinchar ==========
+    /*========== char ** redirect_stdin() ==========
     Inputs: char ** arguments, int num_of_args
-    Returns: array of strings with each index containing the separate commands taken from 
-    the input without the "<" so that the commands can be executed.
+    Returns: array of strings with each index containing the separate arguments taken from 
+    the input without the "<" and the file name after the "<" so that the command can be executed.
     
-    Redirects output using "<". The function looks through char** arguments and if the 
-    commands are separated using "<", when the commands are executed it will use the one
-    of the argumentsas input for the other. num_of_args is used for creating the output. 
+    Redirects input using "<". The function looks through char** arguments and sees if "<" is 
+    present. The file name after "<" will replace stdin and the function returns an array
+    that can be checked for redirection or be exectued. num_of_args is used for 
+    memory allocation. 
 
     ====================*/
     
-    /*========== char ** remove_redirect ==========
+    /*========== char ** remove_redirect() ==========
     Inputs: char ** arguments, int loc, int num_of_args
-    Returns: array of strings without the redirection symbols in them
+    Returns: array of strings without the redirection symbols and the file name in them
     
     Removes the redirection symbols from char** arguments found at index "loc". num_of_args 
     is used for memory allocation.
     
     ====================*/
     
-    /*========== char ** redirect_stdout ==========
+    /*========== char ** redirect_stdout() ==========
     Inputs: char ** arguments, int num_of_args
-    Returns: array of strings with each index containing the separate commands taken from
-    the input without the ">" or ">>" so that the commands can be executed.
+    Returns: array of strings with each index containing the separate arguments taken from
+    the input without the ">" or ">>", and without the filename after the redirection symbol 
+    so that the command can be executed.
     
     Redirects output using ">" or ">>". The function looks through char** arguments and if 
-    the commands are separated using ">", when the commands are executed it will overwrite a 
-    file with the contents of executions.  If the commands are separated using ">>", when the
-    commands are executed it will append to a file with the contents of execution. num_of_args
-    is used for creating the output. 
+    ">" or ">>" is present. If ">" is present and the command is executed, it will overwrite
+    a file with the contents of executions.  If ">>" is present and the command is executed, 
+    the contents of execution will be appended to the file. num_of_args is used for memory allocation. 
     
     ====================*/
 ```
